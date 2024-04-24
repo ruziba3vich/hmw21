@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"github.com/go-shafaq/defcase"
+	gg "github.com/go-shafaq/gin"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
@@ -13,6 +15,12 @@ import (
 func main() {
 	router := gin.Default()
 
+	dcase := defcase.Get()
+	dcase.SetCase("json", "*", defcase.Snak_case)
+	dcase.SetCase("form", "*", defcase.Snak_case)
+
+	gg.SetDefCase(dcase)
+
 	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", "localhost", 5432, "postgres", "Dost0n1k", "userRequests")
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
@@ -20,9 +28,9 @@ func main() {
 	}
 	defer db.Close()
 
-	databases := []string{"users", "admins"}
+	dbNames := []string{"users", "admins"}
 
-	for _, dbName := range databases {
+	for _, dbName := range dbNames {
 		name := "../internal/db/" + dbName + ".sql"
 		sqlFile, err := os.ReadFile(name)
 		if err != nil {
