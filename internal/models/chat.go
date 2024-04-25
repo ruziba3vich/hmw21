@@ -12,8 +12,8 @@ type Chat struct {
 }
 
 type UserWithMessage struct {
-	u *User
-	m *Message
+	U *User
+	M *Message
 }
 
 func (ch *Chat) GetAllMessages() []UserWithMessage {

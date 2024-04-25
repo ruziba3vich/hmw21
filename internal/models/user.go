@@ -30,7 +30,7 @@ func (u *User) JoinIntoChat(chat *Chat, db *sql.DB) error {
 func (u *User) SendMessage(m *Message, chat *Chat, db *sql.DB) error {
 	m.SentOn = time.Now()
 	chat.mutex.Lock()
-	chat.Messages = append(chat.Messages, UserWithMessage{u: u, m: m})
+	chat.Messages = append(chat.Messages, UserWithMessage{U: u, M: m})
 	query := "INSERT INTO Messages(sender_id, msg, sent_on) VALUES ($1, $2, $3) RETURNING id;"
 	if err := db.QueryRow(query, u.Id, m.Message, m.SentOn).Scan(&m.Id); err != nil {
 		return err

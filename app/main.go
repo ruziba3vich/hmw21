@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"log"
 	"os"
+
 	"github.com/go-shafaq/defcase"
 	gg "github.com/go-shafaq/gin"
+	"github.com/ruziba3vich/hmw21/internal/handlers"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
@@ -42,6 +44,14 @@ func main() {
 			PrintError(err)
 		}
 	}
+
+	router.POST("/login", func(c *gin.Context) {
+		handlers.LogInHandler(c, db)
+	})
+
+	router.POST("/join-chat/id", func(c *gin.Context) {
+		handlers.JoinChat(c, db)
+	})
 
 	address := "localhost:7777"
 	log.Println("Server is listening on", address)
