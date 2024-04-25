@@ -1,9 +1,23 @@
 package models
 
+import "sync"
+
 type Chat struct {
 	Id        int
 	ChatName  string
-	CreatedBy User
+	CreatedBy *User
+	Users     map[*User]bool
+	mutex     sync.Mutex
+	Messages  []UserWithMessage
+}
+
+type UserWithMessage struct {
+	u *User
+	m *Message
+}
+
+func (ch *Chat) GetAllMessages() []UserWithMessage {
+	return ch.Messages
 }
 
 /*
